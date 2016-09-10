@@ -7,7 +7,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity implements GetFlickrJsonData.OnDataAvailable{
     private static final String TAG = "MainActivity";
 
     @Override
@@ -19,6 +21,16 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         Log.d(TAG, "onCreate: ends");
+    }
+
+    @Override
+    protected void onResume() {
+        Log.d(TAG, "onResume: starts");
+        super.onResume();
+        GetFlickrJsonData getFlickrJsonData = new GetFlickrJsonData(this, "https://api.flickr.com/services/feeds/photos_public.gne", "en-us", true);
+        //getFlickrJsonData.executeOnSameThread("android, nougat");
+        getFlickrJsonData.execute("android, nougat");
+        Log.d(TAG, "onResume ends");
     }
 
     @Override
@@ -43,5 +55,13 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d(TAG, "onOptionsItemSelected() returned: returned");
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onDataAvailable(List<Photo> data, DownloadStatus status){
+        if(status == DownloadStatus.OK)
+            Log.d(TAG, "onDataAvailable: data is " + data);
+        else
+            Log.e(TAG, "onDataAvailable failed with status " + status);
     }
 }
