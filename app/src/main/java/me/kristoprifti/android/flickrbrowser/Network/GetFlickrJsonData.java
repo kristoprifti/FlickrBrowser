@@ -1,4 +1,4 @@
-package me.kristoprifti.android.flickrbrowser;
+package me.kristoprifti.android.flickrbrowser.network;
 
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -11,11 +11,13 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.kristoprifti.android.flickrbrowser.models.Photo;
+
 /**
  * Created by k.prifti on 10.9.2016 г..
  */
 
-class GetFlickrJsonData extends AsyncTask<String, Void, List<Photo>> implements GetRawData.OnDownloadComplete{
+public class GetFlickrJsonData extends AsyncTask<String, Void, List<Photo>> implements GetRawData.OnDownloadComplete{
     private static final String TAG = "GetFlickrJsonData";
 
     private List<Photo> mPhotoList = null;
@@ -27,11 +29,11 @@ class GetFlickrJsonData extends AsyncTask<String, Void, List<Photo>> implements 
 
     private boolean runningOnSameThread = false;
 
-    interface OnDataAvailable{
+    public interface OnDataAvailable{
         void onDataAvailable(List<Photo> data, DownloadStatus status);
     }
 
-    GetFlickrJsonData(OnDataAvailable callBack, String baseURL, String language, boolean matchAll) {
+    public GetFlickrJsonData(OnDataAvailable callBack, String baseURL, String language, boolean matchAll) {
         Log.d(TAG, "GetFlickrJsonData called");
         mBaseURL = baseURL;
         mCallBack = callBack;
@@ -39,15 +41,6 @@ class GetFlickrJsonData extends AsyncTask<String, Void, List<Photo>> implements 
         mMatchAll = matchAll;
     }
 
-    void executeOnSameThread(String searchCriteria){
-        Log.d(TAG, "executeOnSameThread starts");
-        runningOnSameThread = true;
-        String destinationUri = createUri(searchCriteria, mLanguage, mMatchAll);
-
-        GetRawData getRawData = new GetRawData(this);
-        getRawData.execute(destinationUri);
-        Log.d(TAG, "executeOnSameThread ends");
-    }
     @Override
     protected void onPostExecute(List<Photo> photos) {
         Log.d(TAG, "onPostExecute starts");

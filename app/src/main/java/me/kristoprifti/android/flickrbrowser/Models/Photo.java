@@ -1,10 +1,14 @@
-package me.kristoprifti.android.flickrbrowser;
+package me.kristoprifti.android.flickrbrowser.models;
+
+import java.io.Serializable;
 
 /**
  * Created by k.prifti on 10.9.2016 г..
  */
 
-class Photo {
+public class Photo implements Serializable{
+
+    private static final long serialVersionUID = 1L;
 
     private String mTitle;
     private String mAuthor;
@@ -22,27 +26,23 @@ class Photo {
         mImage = image;
     }
 
-    String getTitle() {
+    public String getTitle() {
         return mTitle;
     }
 
-    String getAuthor() {
+    public String getAuthor() {
         return mAuthor;
     }
 
-    String getAuthorId() {
-        return mAuthorId;
-    }
-
-    String getLink() {
+    public String getLink() {
         return mLink;
     }
 
-    String getTags() {
+    public String getTags() {
         return mTags;
     }
 
-    String getImage() {
+    public String getImage() {
         return mImage;
     }
 
